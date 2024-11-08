@@ -12,29 +12,32 @@ const fetchGetData = async (endpoint) => {
   }
 }
 
-// FILL GALLERY
-const fillGallery = async (param = 0) => {
+const fillGallery = async () => {
+  // Works to be fetched
   const works = await fetchGetData("works");
 
-  const fill = (arr) => {
-    gallery.innerHTML = ''
-    
-    arr.map((work) => {
-      const item = 
-      `
-      <figure data-category-id="${work.categoryId}">
-        <img src="${work.imageUrl}" alt="${work.title}">
-        <figcaption>${work.title}</figcaption>
-      </figure>
-      `
-      gallery.innerHTML += item
-    })
-  }
-  
-  // FILL BY CATEGORY ID, 0 IS THE DEFAULT DATASET TO FETCH ALL
-  const filteredWorks = works.filter((work) => work.categoryId === param)
+  works.forEach((work) => {
+    const item = 
+    `
+    <figure class="workFigure" data-category-id="${work.categoryId}">
+      <img src="${work.imageUrl}" alt="${work.title}">
+      <figcaption>${work.title}</figcaption>
+    </figure>
+    `
 
-  param === 0 ? fill(works) : fill(filteredWorks)
+    gallery.innerHTML += item
+  })
+}
+
+const filterGallery = (id = "0") => {
+  // Works already fetched, available in DOM
+  const works = document.querySelectorAll(".workFigure");
+  
+  works.forEach((work) => {
+    const shouldBeInactive = id !== "0" && work.dataset.categoryId !== id
+
+    work.classList.toggle("inactive", shouldBeInactive)
+  })
 }
 
 // FILL CATEGORIES
@@ -46,7 +49,7 @@ const fillCategories = async () => {
     categoryWrapper.innerHTML += item;
   })
 
-  const categoryBtns = Array.from(document.querySelectorAll(".categories > .btn-categories"));
+  const categoryBtns = document.querySelectorAll(".categories > .btn-categories");
 
   // FILTER EVENT
   categoryBtns.forEach((btn) => {
@@ -58,9 +61,9 @@ const fillCategories = async () => {
       previousSelected.classList.remove("selected")
 
       e.target.classList.add("selected")
-      const id = Number(e.target.dataset.categoryId)
+      const id = e.target.dataset.categoryId
       
-      fillGallery(id)
+      filterGallery(id)
     })
   })
 }
