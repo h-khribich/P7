@@ -1,3 +1,5 @@
+import { checkAuth, logoutUser } from './auth.js'
+
 // DECLARATIONS
 const gallery = document.querySelector(".gallery")
 const categoryWrapper = document.querySelector(".categories")
@@ -68,6 +70,11 @@ const fillCategories = async () => {
   })
 }
 
+loginBtn.addEventListener("click", (e) => {
+  sessionStorage.getItem("authToken") && logoutUser()
+})
+
 // INITIALIZATION
 fillGallery()
 fillCategories()
+checkAuth()

@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="./assets/style.css">
   </head>
   <body>
+    <script>0</script>
     <header>
       <h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
       <nav>
@@ -25,11 +26,12 @@
     <main>
       <section id="login" class="userForm">
         <h2>Log In</h2>
-        <form action="#" method="post">
+        <form action="#" method="post" id="loginForm">
           <label for="email">Email</label>
           <input type="email" name="email" id="email">
-          <label for="mpd">Mot de passe</label>
-          <input type="input" name="mpd" id="mpd">
+          <label for="pwd">Mot de passe</label>
+          <input type="input" name="pwd" id="pwd">
+          <p class="invalidCred inactive">Email ou mot de passe incorrect</p>
           <input type="submit" value="Se connecter">
           <a href="#" id="forgotPwd">Mot de passe oublié ?</a>
         </form>
@@ -42,6 +44,6 @@
         </ul>
       </nav>
     </footer>
-    <script src="./login.js"></script>
+    <script src="./auth.js" type="module" defer></script>
   </body>
 </html> 

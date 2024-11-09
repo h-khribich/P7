@@ -57,8 +57,26 @@ table {
   }
 }
 
+@keyframes shake {
+  0% {
+    margin-left: 0rem;
+  }
+  25% {
+    margin-left: 0.5rem;
+  }
+  75% {
+    margin-left: -0.5rem;
+  }
+  100% {
+    margin-left: 0rem;
+  }
+}
+
 html {
   scroll-behavior: smooth;
+  animation: fadeInAnimation ease 1.5s;
+  animation-iteration-count: 1;
+  animation-fill-mode: both;
 }
 
 body {
@@ -66,9 +84,6 @@ body {
 	margin:auto;
 	font-family: 'Work Sans' ;
 	font-size: 14px;
-  animation: fadeInAnimation ease 1.5s;
-  animation-iteration-count: 1;
-  animation-fill-mode: forwards;
 }
 
 main {
@@ -139,7 +154,7 @@ nav a {
   transition: 0.3s;
 }
 
-nav a:hover, li:hover, #loginBtn {
+nav a:hover, li:hover, #loginBtn:hover {
   text-shadow: 1px 0 0 currentColor;
 }
 
@@ -276,6 +291,21 @@ footer nav ul {
 
 .inactive {
   display: none;
+}
+
+.invalidCred {
+  width: fit-content;
+  align-self: center;
+  padding: 1rem;
+  font-weight: 700;
+  background-color: #ca3838;
+  color: white;
+  border-radius: 25px;
+  margin-top: 2rem;
+}
+
+.shake {
+  animation: shake 0.2s ease-in-out 0s 3;
 }
 
 #forgotPwd {
