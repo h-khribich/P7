@@ -1,21 +1,47 @@
 <!DOCTYPE html>
 <html lang="fr">
-<meta charset="UTF-8">
-<title>Page Title</title>
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<link rel="stylesheet" href="">
-<style>
-</style>
-<script src=""></script>
-<body>
-
-<img src="img_la.jpg" alt="LA" style="width:100%">
-
-<div class="">
- <h1>This is a Heading</h1>
- <p>This is a paragraph.</p>
- <p>This is another paragraph.</p>
-</div>
-
-</body>
+  <head>
+    <meta charset="UTF-8">
+    <title>Sophie Bluel - Architecte d'intérieur</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap" rel="stylesheet">
+    <meta name="description" content="">
+    <link rel="stylesheet" href="./assets/style.css">
+  </head>
+  <body>
+    <header>
+      <h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
+      <nav>
+        <ul>
+          <li><a href="./index.html#portfolio">projets</a></li>
+          <li><a href="./index.html#contact">contact</a></li>
+          <li><a href="#" id="loginBtn">login</a></li>
+          <li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
+        </ul>
+      </nav>
+    </header>
+    <main>
+      <section id="login" class="userForm">
+        <h2>Log In</h2>
+        <form action="#" method="post">
+          <label for="email">Email</label>
+          <input type="email" name="email" id="email">
+          <label for="mpd">Mot de passe</label>
+          <input type="input" name="mpd" id="mpd">
+          <input type="submit" value="Se connecter">
+          <a href="#" id="forgotPwd">Mot de passe oublié ?</a>
+        </form>
+      </section>
+    </main>
+    <footer>
+      <nav>
+        <ul>
+          <li>Mentions Légales</li>
+        </ul>
+      </nav>
+    </footer>
+    <script src="./login.js"></script>
+  </body>
 </html> 
