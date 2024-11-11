@@ -4,9 +4,16 @@ const pwdInput = document.getElementById("pwd");
 const loginForm = document.getElementById("loginForm");
 const loginBtn = document.getElementById("loginBtn");
 const invalidCredMessage = document.querySelector(".invalidCred");
+const editMode = document.querySelector(".editMode");
 
 const checkAuth = () => {
-  sessionStorage.getItem('authToken') ? loginBtn.innerText = 'logout' : loginBtn.innerText = 'login';
+  if (sessionStorage.getItem('authToken')) {
+    loginBtn.innerText = 'logout'
+    editMode.classList.remove("inactive");
+  } else {
+    loginBtn.innerText = 'login';
+    editMode.classList.add("inactive");
+  }
 }
 
 // INVALID CREDENTIALS MESSAGE
@@ -20,7 +27,7 @@ if (emailInput && pwdInput) {
   })
 }
 
-// ATHENTIFICATING USER
+// AUTHENTIFICATING USER
 const authUser = async (email, pwd) => {
   const chargeUtile = {
     "email": email,

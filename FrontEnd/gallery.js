@@ -1,8 +1,9 @@
 import { checkAuth, logoutUser } from './auth.js'
 
 // DECLARATIONS
-const gallery = document.querySelector(".gallery")
-const categoryWrapper = document.querySelector(".categories")
+const gallery = document.querySelector(".gallery");
+const categoryWrapper = document.querySelector(".categories");
+const editMode = document.querySelector(".editMode");
 
 // GET CALLS
 const fetchGetData = async (endpoint) => {
