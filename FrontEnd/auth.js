@@ -5,14 +5,20 @@ const loginForm = document.getElementById("loginForm");
 const loginBtn = document.getElementById("loginBtn");
 const invalidCredMessage = document.querySelector(".invalidCred");
 const editMode = document.querySelector(".editMode");
+const galleryEditBtn = document.getElementById("galleryEditBtn");
+const categoryWrapper = document.querySelector(".categories");
 
 const checkAuth = () => {
   if (sessionStorage.getItem('authToken')) {
     loginBtn.innerText = 'logout'
     editMode.classList.remove("inactive");
+    categoryWrapper && categoryWrapper.classList.add("inactive")
+    galleryEditBtn && galleryEditBtn.classList.remove("inactive");
   } else {
     loginBtn.innerText = 'login';
     editMode.classList.add("inactive");
+    galleryEditBtn && galleryEditBtn.classList.add("inactive");
+    categoryWrapper && categoryWrapper.classList.remove("inactive")
   }
 }
 

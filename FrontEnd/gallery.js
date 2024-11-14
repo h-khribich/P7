@@ -3,7 +3,25 @@ import { checkAuth, logoutUser } from './auth.js'
 // DECLARATIONS
 const gallery = document.querySelector(".gallery");
 const categoryWrapper = document.querySelector(".categories");
-const editMode = document.querySelector(".editMode");
+const editModalWrapper = document.getElementById("editPortfolioModalWrapper");
+const editModal = document.getElementById("editPortfolioModal");
+const galleryEditBtn = document.getElementById("galleryEditBtn");
+
+
+// EDIT POPUP ONLY AVAILABLE TO LOGGED-IN USERS
+galleryEditBtn && galleryEditBtn.addEventListener(("click"), (e) => {
+  editModalWrapper.showModal();
+  e.stopImmediatePropagation()
+})
+
+document.addEventListener("click", (e) => {
+  if (editModalWrapper.hasAttribute("open")) {
+    // Check if the click is outside the modal
+    if (e.target !== editModal && !editModal.contains(e.target)) {
+      editModalWrapper.close();
+    }
+  }
+});
 
 // GET CALLS
 const fetchGetData = async (endpoint) => {

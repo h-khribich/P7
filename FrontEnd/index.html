@@ -46,13 +46,27 @@
       </section>
 
       <section id="portfolio">
-        <h2>Mes Projets</h2>
+        <div id="galleryTitleWrapper">
+          <h2>Mes Projets</h2>
+          <span id="galleryEditBtn"><i class="fa-regular fa-pen-to-square"></i> Modifier</span>
+        </div>
         <div class="categories">
           <button type="button" data-category-id="0" class="btn-categories selected">Tous</button>
         </div>
         <div class="gallery">
         </div>
       </section>
+
+      <dialog id="editPortfolioModalWrapper">
+        <form action="#" method="dialog" class="userForm" id="editPortfolioModal">
+          <button id="modalCloseBtn"><i class="fa-solid fa-xmark"></i></button>
+          <h3 id="modalTitle"></h3>
+          <div id="modalMainContent">
+          </div>
+          <hr id="modalSeparator">
+          <button type="submit" id="modalConfirmationBtn"></button>
+        </form>
+      </dialog>
 
       <section id="contact" class="userForm">
         <h2>Contact</h2>
