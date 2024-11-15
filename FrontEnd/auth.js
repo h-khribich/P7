@@ -12,7 +12,7 @@ const checkAuth = () => {
   if (sessionStorage.getItem('authToken')) {
     loginBtn.innerText = 'logout'
     editMode.classList.remove("inactive");
-    categoryWrapper && categoryWrapper.classList.add("inactive")
+    categoryWrapper && categoryWrapper.classList.add("inactive");
     galleryEditBtn && galleryEditBtn.classList.remove("inactive");
   } else {
     loginBtn.innerText = 'login';

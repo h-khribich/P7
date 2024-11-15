@@ -58,13 +58,16 @@
       </section>
 
       <dialog id="editPortfolioModalWrapper">
-        <form action="#" method="dialog" class="userForm" id="editPortfolioModal">
-          <button id="modalCloseBtn"><i class="fa-solid fa-xmark"></i></button>
+        <div id="modalNavBtnsWrapper">
+          <button disabled id="modalBackBtn" class="modalNavBtn invisible"><i class="fa-solid fa-arrow-left"></i></button>
+          <button id="modalCloseBtn" class="modalNavBtn"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <form action="#" method="dialog" id="editPortfolioModal">
           <h3 id="modalTitle"></h3>
           <div id="modalMainContent">
           </div>
           <hr id="modalSeparator">
-          <button type="submit" id="modalConfirmationBtn"></button>
+          <input type="submit" id="modalConfirmationBtn"></input>
         </form>
       </dialog>
 

@@ -6,22 +6,11 @@ const categoryWrapper = document.querySelector(".categories");
 const editModalWrapper = document.getElementById("editPortfolioModalWrapper");
 const editModal = document.getElementById("editPortfolioModal");
 const galleryEditBtn = document.getElementById("galleryEditBtn");
-
-
-// EDIT POPUP ONLY AVAILABLE TO LOGGED-IN USERS
-galleryEditBtn && galleryEditBtn.addEventListener(("click"), (e) => {
-  editModalWrapper.showModal();
-  e.stopImmediatePropagation()
-})
-
-document.addEventListener("click", (e) => {
-  if (editModalWrapper.hasAttribute("open")) {
-    // Check if the click is outside the modal
-    if (e.target !== editModal && !editModal.contains(e.target)) {
-      editModalWrapper.close();
-    }
-  }
-});
+const modalTitle = document.getElementById("modalTitle");
+const modalMainContent = document.getElementById("modalMainContent");
+const modalConfirmationBtn = document.getElementById("modalConfirmationBtn");
+const modalNavBtnsWrapper = document.getElementById("modalNavBtnsWrapper")
+const modalBackBtn = document.getElementById("modalBackBtn");
 
 // GET CALLS
 const fetchGetData = async (endpoint) => {
@@ -32,6 +21,74 @@ const fetchGetData = async (endpoint) => {
     console.log(error);
   }
 }
+
+
+
+const deletePhoto = async (id) => {
+  const token = sessionStorage.getItem('authToken');
+
+  try {
+    await fetch(`http://localhost:5678/api/works/${id}`, {
+      method: "delete",
+      headers: {
+        "Authorization" : "Bearer " + token,
+        "Content-Type": "application/json"
+      }
+    })
+  } catch (error) {
+    console.log(error);
+  }
+} 
+  
+
+const addDeletePicturesContent = async () => {
+  modalTitle.innerText = "Gallerie photo";
+  modalConfirmationBtn.value = "Ajouter une photo";
+  modalMainContent.innerHTML = '';
+
+  const works = await fetchGetData("works");
+
+  works.forEach((work) => {
+    const item = 
+    `
+    <div class="modalImgWrapper">
+      <button class="removeImgBtn">
+        <i class="fa-solid fa-trash-can fa-sm"></i>
+      </button>
+      <img src="${work.imageUrl}" alt="${work.title}" class="modalImg" data-id=${work.id} />
+    </div>
+    `
+
+    modalMainContent.innerHTML += item;
+  })
+
+  const imagesRemoveBtn = document.querySelectorAll(".removeImgBtn");
+  imagesRemoveBtn.forEach((btn) => {
+    btn.addEventListener(("click"), (e) => {
+      e.preventDefault()
+      const photoId = e.target.closest(".removeImgBtn").nextElementSibling.dataset.id;
+      deletePhoto(photoId);
+      addDeletePicturesContent();
+    })
+  })
+}
+
+// EDIT POPUP ONLY AVAILABLE TO LOGGED-IN USERS
+galleryEditBtn && galleryEditBtn.addEventListener(("click"), (e) => {
+  editModalWrapper.showModal();
+  addDeletePicturesContent();
+  e.stopImmediatePropagation()
+})
+// Close modal on outside click
+document.addEventListener("click", (e) => {
+  if (editModalWrapper.hasAttribute("open")) {
+    // Check if the click is outside the modal
+    if ((e.target !== editModal && !editModal.contains(e.target)) && e.target !== modalNavBtnsWrapper) {
+      editModalWrapper.close();
+    }
+  }
+});
+
 
 const fillGallery = async () => {
   // Works to be fetched
@@ -97,3 +154,4 @@ loginBtn.addEventListener("click", (e) => {
 fillGallery()
 fillCategories()
 checkAuth()
+editModalWrapper.close()
