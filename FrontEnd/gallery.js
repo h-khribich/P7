@@ -22,8 +22,6 @@ const fetchGetData = async (endpoint) => {
   }
 }
 
-
-
 const deletePhoto = async (id) => {
   const token = sessionStorage.getItem('authToken');
 
@@ -35,27 +33,30 @@ const deletePhoto = async (id) => {
         "Content-Type": "application/json"
       }
     })
+    
+    const elsToRemove = document.querySelectorAll(`[data-id="${id}"]`);
+    elsToRemove.forEach((el) => el.remove());
+
   } catch (error) {
     console.log(error);
   }
 } 
-  
 
-const addDeletePicturesContent = async () => {
+const addDeletePicturesContent = () => {
   modalTitle.innerText = "Gallerie photo";
   modalConfirmationBtn.value = "Ajouter une photo";
   modalMainContent.innerHTML = '';
 
-  const works = await fetchGetData("works");
+  const images = document.querySelectorAll(".figureImg");
 
-  works.forEach((work) => {
+  images.forEach((image) => {
     const item = 
     `
-    <div class="modalImgWrapper">
+    <div class="modalImgWrapper" data-id="${image.dataset.id}">
       <button class="removeImgBtn">
         <i class="fa-solid fa-trash-can fa-sm"></i>
       </button>
-      <img src="${work.imageUrl}" alt="${work.title}" class="modalImg" data-id=${work.id} />
+      <img src="${image.src}" alt="${image.alt}" class="modalImg" data-id="${image.dataset.id}" />
     </div>
     `
 
@@ -65,7 +66,7 @@ const addDeletePicturesContent = async () => {
   const imagesRemoveBtn = document.querySelectorAll(".removeImgBtn");
   imagesRemoveBtn.forEach((btn) => {
     btn.addEventListener(("click"), (e) => {
-      e.preventDefault()
+      e.stopImmediatePropagation();
       const photoId = e.target.closest(".removeImgBtn").nextElementSibling.dataset.id;
       deletePhoto(photoId);
       addDeletePicturesContent();
@@ -97,8 +98,8 @@ const fillGallery = async () => {
   works.forEach((work) => {
     const item = 
     `
-    <figure class="workFigure" data-category-id="${work.categoryId}">
-      <img src="${work.imageUrl}" alt="${work.title}">
+    <figure class="workFigure" data-category-id="${work.categoryId}" data-id="${work.id}">
+      <img src="${work.imageUrl}" alt="${work.title}" class="figureImg" data-id="${work.id}">
       <figcaption>${work.title}</figcaption>
     </figure>
     `
@@ -154,4 +155,3 @@ loginBtn.addEventListener("click", (e) => {
 fillGallery()
 fillCategories()
 checkAuth()
-editModalWrapper.close()

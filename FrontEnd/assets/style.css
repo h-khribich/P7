@@ -347,8 +347,6 @@ footer nav ul {
 
 #editPortfolioModalWrapper {
   padding: 0;
-  width: 630px;
-  height: 688px;
   border: none;
   border-radius: 20px;
   display: flex;
@@ -397,11 +395,10 @@ footer nav ul {
 #modalMainContent {
   display: flex;
   flex-wrap: wrap;
-  flex-grow: 1;
   gap: 10px;
-  justify-content: space-between;
-  margin-top: 5%;
-  width: 70%;
+  justify-content: flex-start;
+  margin: 5% 0;
+  width: 72%;
 }
 
 .modalImgWrapper {
