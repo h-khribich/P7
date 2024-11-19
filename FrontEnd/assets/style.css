@@ -497,7 +497,7 @@ dialog:not([open]) * {
   color: #306685;
   background-color: #CBD6DC;
   border-radius: 25px;
-  font-weight: 700;
+  font-weight: 500;
   cursor: pointer;
 }
 

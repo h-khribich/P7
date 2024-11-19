@@ -173,7 +173,7 @@ const addNewPictureContent = () => {
     <form id="addImgForm" action="" method="dialog">
       <div id="addImgInputWrapper">
         <i class="fa-regular fa-image addImgIcon"></i>
-        <label for="addImg" id="addImgBtn"><i class="fa-solid fa-plus"></i> Ajouter photo</label>
+        <label for="addImg" id="addImgBtn"><i class="fa-solid fa-plus fa-sm"></i> Ajouter photo</label>
         <input type="file" name="addImg" id="addImg" accept=".jpg, .jpeg, .png" class="inactive" />
         <p id="fileInputDescription">jpg, png: 4mo max</p>
       </div>
