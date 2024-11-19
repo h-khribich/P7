@@ -7,8 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap" rel="stylesheet">
-    <meta name="description" content="">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400..800&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/fd6aec57ce.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="./assets/style.css">
   </head>
@@ -59,16 +58,17 @@
 
       <dialog id="editPortfolioModalWrapper">
         <div id="modalNavBtnsWrapper">
-          <button disabled id="modalBackBtn" class="modalNavBtn invisible"><i class="fa-solid fa-arrow-left"></i></button>
+          <button id="modalBackBtn" class="modalNavBtn invisible" disabled><i class="fa-solid fa-arrow-left"></i></button>
           <button id="modalCloseBtn" class="modalNavBtn"><i class="fa-solid fa-xmark"></i></button>
         </div>
-        <form action="#" method="dialog" id="editPortfolioModal">
+        <div id="editPortfolioModal">
           <h3 id="modalTitle"></h3>
           <div id="modalMainContent">
           </div>
           <hr id="modalSeparator">
-          <input type="submit" id="modalConfirmationBtn"></input>
-        </form>
+          <button id="modalAddPictureBtn" class="modalBtn">Ajouter une photo</button>
+          <button type="submit" form="addImgForm" id="modalConfirmationBtn" class="modalBtn inactive" disabled>Valider</button>
+        </div>
       </dialog>
 
       <section id="contact" class="userForm">

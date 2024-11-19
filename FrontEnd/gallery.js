@@ -9,8 +9,10 @@ const galleryEditBtn = document.getElementById("galleryEditBtn");
 const modalTitle = document.getElementById("modalTitle");
 const modalMainContent = document.getElementById("modalMainContent");
 const modalConfirmationBtn = document.getElementById("modalConfirmationBtn");
-const modalNavBtnsWrapper = document.getElementById("modalNavBtnsWrapper")
+const modalNavBtnsWrapper = document.getElementById("modalNavBtnsWrapper");
+const modalAddPictureBtn = document.getElementById("modalAddPictureBtn");
 const modalBackBtn = document.getElementById("modalBackBtn");
+let globalCategories;
 
 // GET CALLS
 const fetchGetData = async (endpoint) => {
@@ -42,10 +44,77 @@ const deletePhoto = async (id) => {
   }
 } 
 
+
+
+const fillGallery = async () => {
+  // Works to be fetched
+  const works = await fetchGetData("works");
+  
+  works.forEach((work) => {
+    const item = 
+    `
+    <figure class="workFigure" data-category-id="${work.categoryId}" data-id="${work.id}">
+    <img src="${work.imageUrl}" alt="${work.title}" class="figureImg" data-id="${work.id}">
+    <figcaption>${work.title}</figcaption>
+    </figure>
+    `
+    
+    gallery.innerHTML += item
+  })
+}
+
+const filterGallery = (id = "0") => {
+  // Works already fetched, available in DOM
+  const works = document.querySelectorAll(".workFigure");
+  
+  works.forEach((work) => {
+    const shouldBeInactive = id !== "0" && work.dataset.categoryId !== id
+    
+    work.classList.toggle("inactive", shouldBeInactive)
+  })
+}
+
+// FILL CATEGORIES
+const fillCategories = async () => {
+  const categories = await fetchGetData("categories");
+  globalCategories = categories;
+  
+  categories.map((category) => {
+    const item = `<button type="button" data-category-id="${category.id}" class="btn-categories">${category.name}</button>`
+    categoryWrapper.innerHTML += item;
+  })
+  
+  const categoryBtns = document.querySelectorAll(".categories > .btn-categories");
+  
+  // FILTER EVENT
+  categoryBtns.forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      e.preventDefault();
+      
+      // TOGGLE 'SELECTED' STATUS
+      const previousSelected = document.querySelector(".categories > .selected")
+      previousSelected.classList.remove("selected")
+      
+      e.target.classList.add("selected")
+      const id = e.target.dataset.categoryId
+      
+      filterGallery(id)
+    })
+  })
+}
+
+loginBtn.addEventListener("click", (e) => {
+  sessionStorage.getItem("authToken") && logoutUser()
+})
+
 const addDeletePicturesContent = () => {
   modalTitle.innerText = "Gallerie photo";
   modalConfirmationBtn.value = "Ajouter une photo";
   modalMainContent.innerHTML = '';
+  modalConfirmationBtn.classList.add("inactive");
+  modalAddPictureBtn.classList.remove("inactive");
+  modalBackBtn.setAttribute("disabled", "");
+  modalBackBtn.classList.add("invisible");
 
   const images = document.querySelectorAll(".figureImg");
 
@@ -90,65 +159,45 @@ document.addEventListener("click", (e) => {
   }
 });
 
+const addNewPictureContent = () => {
+  modalAddPictureBtn.classList.toggle("inactive");
+  modalConfirmationBtn.classList.toggle("inactive");
+  modalBackBtn.classList.remove("invisible");
+  modalBackBtn.removeAttribute("disabled");
+  modalTitle.innerText = "Ajouter une photo";
+  modalMainContent.innerHTML = ''
+  modalAddPictureBtn.classList.add("inactive");
 
-const fillGallery = async () => {
-  // Works to be fetched
-  const works = await fetchGetData("works");
-
-  works.forEach((work) => {
-    const item = 
-    `
-    <figure class="workFigure" data-category-id="${work.categoryId}" data-id="${work.id}">
-      <img src="${work.imageUrl}" alt="${work.title}" class="figureImg" data-id="${work.id}">
-      <figcaption>${work.title}</figcaption>
-    </figure>
-    `
-
-    gallery.innerHTML += item
-  })
+  modalMainContent.innerHTML = 
+  `
+    <form id="addImgForm" action="" method="dialog">
+      <div id="addImgInputWrapper">
+        <i class="fa-regular fa-image addImgIcon"></i>
+        <label for="addImg" id="addImgBtn"><i class="fa-solid fa-plus"></i> Ajouter photo</label>
+        <input type="file" name="addImg" id="addImg" accept=".jpg, .jpeg, .png" class="inactive" />
+        <p id="fileInputDescription">jpg, png: 4mo max</p>
+      </div>
+      <div id="inputWrapper">
+        <label for="titre" class="inputDescription">Titre</label>
+        <input type="text" name="titre" required />
+        <label for="categorie" class="inputDescription">Catégorie</label>
+        <select name="categrie" required>
+        </select>
+      </div>
+    <form/>
+  `
 }
 
-const filterGallery = (id = "0") => {
-  // Works already fetched, available in DOM
-  const works = document.querySelectorAll(".workFigure");
-  
-  works.forEach((work) => {
-    const shouldBeInactive = id !== "0" && work.dataset.categoryId !== id
+modalBackBtn.addEventListener(("click"), (e) => {
+  e.stopPropagation();
+  modalBackBtn.setAttribute("disabled", "");
+  modalBackBtn.classList.add("invisible");
+  addDeletePicturesContent();
+})
 
-    work.classList.toggle("inactive", shouldBeInactive)
-  })
-}
-
-// FILL CATEGORIES
-const fillCategories = async () => {
-  const categories = await fetchGetData("categories");
-
-  categories.map((category) => {
-    const item = `<button type="button" data-category-id="${category.id}" class="btn-categories">${category.name}</button>`
-    categoryWrapper.innerHTML += item;
-  })
-
-  const categoryBtns = document.querySelectorAll(".categories > .btn-categories");
-
-  // FILTER EVENT
-  categoryBtns.forEach((btn) => {
-    btn.addEventListener("click", (e) => {
-      e.preventDefault();
-
-      // TOGGLE 'SELECTED' STATUS
-      const previousSelected = document.querySelector(".categories > .selected")
-      previousSelected.classList.remove("selected")
-
-      e.target.classList.add("selected")
-      const id = e.target.dataset.categoryId
-      
-      filterGallery(id)
-    })
-  })
-}
-
-loginBtn.addEventListener("click", (e) => {
-  sessionStorage.getItem("authToken") && logoutUser()
+modalAddPictureBtn.addEventListener("click", (e) => {
+  e.preventDefault();
+  addNewPictureContent();
 })
 
 // INITIALIZATION
