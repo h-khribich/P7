@@ -167,7 +167,9 @@ const addNewPictureContent = () => {
   modalTitle.innerText = "Ajouter une photo";
   modalMainContent.innerHTML = ''
   modalAddPictureBtn.classList.add("inactive");
-
+  let categoryNames = [];
+  globalCategories.forEach((category) => categoryNames.push(category.name));
+  
   modalMainContent.innerHTML = 
   `
     <form id="addImgForm" action="" method="dialog">
@@ -181,11 +183,35 @@ const addNewPictureContent = () => {
         <label for="titre" class="inputDescription">Titre</label>
         <input type="text" name="titre" required />
         <label for="categorie" class="inputDescription">Catégorie</label>
-        <select name="categrie" required>
+        <select name="categorie" id="categorie" required>
+          <option value=""></option>
         </select>
       </div>
     <form/>
   `
+
+  let categorySelect = document.getElementById("categorie");
+  categoryNames.forEach((name) => categorySelect.innerHTML += `<option value="${name}">${name}</option>`);
+
+  let addImgInput = document.getElementById("addImg");
+  addImgInput.addEventListener(("change"), (e) => {
+
+    const files = e.target.files
+
+    if(files.length > 0) {
+      const file = files[0]
+      const reader = new FileReader();
+
+      reader.onload = (e) => {
+        const imgUrl = e.target.result
+        const wrapper = document.getElementById("addImgInputWrapper");
+        wrapper.innerHTML = ''
+        wrapper.style.background = `no-repeat #E8F1F6 center/50% url(${imgUrl})`
+      }
+
+      reader.readAsDataURL(file)
+    }
+  })
 }
 
 modalBackBtn.addEventListener(("click"), (e) => {

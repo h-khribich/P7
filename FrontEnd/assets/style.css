@@ -484,6 +484,7 @@ dialog:not([open]) * {
   background-color: #E8F1F6;
   border-radius: 5px;
   width: 100%;
+  min-height: 180px;
 }
 
 .addImgIcon {
@@ -520,11 +521,24 @@ dialog:not([open]) * {
   width: 100%;
 }
 
-#inputWrapper input, #inputWrapper select {
+#inputWrapper input, #inputWrapper select, #inputWrapper option {
   height: 50px;
   font-size: 1.2em;
   border: none;
   box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+  color: #444;
+  padding-left: 1rem;
+  font-family: 'Work Sans', sans-serif;
+  background-color: white;
+}
+
+select {
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+  background-image: url('./images/Vector.png');
+  background-position: right 10px center;
+  background-repeat: no-repeat;
 }
 
 
