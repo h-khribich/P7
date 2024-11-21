@@ -44,12 +44,30 @@ const deletePhoto = async (id) => {
   }
 } 
 
+const addNewImage = async (body) => {
+  const token = sessionStorage.getItem('authToken');
 
+  try {
+    const data = await fetch(`http://localhost:5678/api/works`, {
+      method: "post",
+      headers: {
+        "Authorization" : "Bearer " + token
+      },
+      body: body
+    })
+    await fillGallery();
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 const fillGallery = async () => {
   // Works to be fetched
   const works = await fetchGetData("works");
   
+  gallery.innerHTML = '';
+
   works.forEach((work) => {
     const item = 
     `
@@ -159,7 +177,7 @@ document.addEventListener("click", (e) => {
   }
 });
 
-const addNewPictureContent = () => {
+const addNewPictureContent = async () => {
   modalAddPictureBtn.classList.toggle("inactive");
   modalConfirmationBtn.classList.toggle("inactive");
   modalBackBtn.classList.remove("invisible");
@@ -167,50 +185,80 @@ const addNewPictureContent = () => {
   modalTitle.innerText = "Ajouter une photo";
   modalMainContent.innerHTML = ''
   modalAddPictureBtn.classList.add("inactive");
-  let categoryNames = [];
-  globalCategories.forEach((category) => categoryNames.push(category.name));
+  let categories = [];
+  globalCategories.forEach((category) => categories.push({"name": category.name, "id": category.id}));
   
   modalMainContent.innerHTML = 
   `
     <form id="addImgForm" action="" method="dialog">
       <div id="addImgInputWrapper">
+        <div class="addImgOverlay"></div>
         <i class="fa-regular fa-image addImgIcon"></i>
-        <label for="addImg" id="addImgBtn"><i class="fa-solid fa-plus fa-sm"></i> Ajouter photo</label>
-        <input type="file" name="addImg" id="addImg" accept=".jpg, .jpeg, .png" class="inactive" />
+        <label for="image" id="addImgBtn"><i class="fa-solid fa-plus fa-sm"></i> Ajouter photo</label>
+        <input type="file" name="image" id="image" accept=".jpg, .jpeg, .png" class="invisible" required />
         <p id="fileInputDescription">jpg, png: 4mo max</p>
       </div>
       <div id="inputWrapper">
-        <label for="titre" class="inputDescription">Titre</label>
-        <input type="text" name="titre" required />
-        <label for="categorie" class="inputDescription">Catégorie</label>
-        <select name="categorie" id="categorie" required>
+        <label for="title" class="inputDescription">Titre</label>
+        <input type="text" name="title" id="title" required />
+        <label for="category" class="inputDescription">Catégorie</label>
+        <select name="category" id="category" required>
           <option value=""></option>
         </select>
       </div>
-    <form/>
+    </form>
   `
 
-  let categorySelect = document.getElementById("categorie");
-  categoryNames.forEach((name) => categorySelect.innerHTML += `<option value="${name}">${name}</option>`);
+  let addImgForm = document.getElementById("addImgForm");
+  let title = document.getElementById("title");
 
-  let addImgInput = document.getElementById("addImg");
+  let categorySelect = document.getElementById("category");
+  categories.forEach((category) => categorySelect.innerHTML += `<option value=${category.id}>${category.name}</option>`);
+
+  let addImgInput = document.getElementById("image");
   addImgInput.addEventListener(("change"), (e) => {
 
     const files = e.target.files
 
     if(files.length > 0) {
-      const file = files[0]
+      const file = files[0];
+      
       const reader = new FileReader();
 
       reader.onload = (e) => {
         const imgUrl = e.target.result
-        const wrapper = document.getElementById("addImgInputWrapper");
-        wrapper.innerHTML = ''
-        wrapper.style.background = `no-repeat #E8F1F6 center/50% url(${imgUrl})`
+    
+        const overlay = document.querySelector(".addImgOverlay");
+        overlay.style.background = `no-repeat #E8F1F6 center/50% url(${imgUrl})`;
+        overlay.classList.add("overlay");
       }
 
       reader.readAsDataURL(file)
     }
+  })
+
+  setTimeout([addImgInput, title, categorySelect].forEach((el) => {
+    el.addEventListener(("input"), (e) => {
+      const isFileSelected = addImgInput.files.length > 0;
+      const isTitleFilled = title.value.trim();
+      const isCategorySelected = categorySelect.value;
+
+      if(modalConfirmationBtn.classList.contains("disabled") && (isFileSelected && isTitleFilled && isCategorySelected)) {
+        modalConfirmationBtn.classList.remove("disabled")
+      } else if (!modalConfirmationBtn.classList.contains("disabled") && (!isFileSelected || !isTitleFilled || !isCategorySelected)) {
+        modalConfirmationBtn.classList.add("disabled")
+      }
+    })
+  }), 100)
+
+  addImgForm.addEventListener(("submit"), (e) => {
+    e.preventDefault();
+    const body = new FormData(addImgForm)
+    const category = parseInt(document.getElementById("category").value);
+    body.set("category", category);
+    
+    addNewImage(body);
+    setTimeout(editModalWrapper.close(), 500);
   })
 }
 

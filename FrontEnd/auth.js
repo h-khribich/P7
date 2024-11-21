@@ -7,6 +7,8 @@ const invalidCredMessage = document.querySelector(".invalidCred");
 const editMode = document.querySelector(".editMode");
 const galleryEditBtn = document.getElementById("galleryEditBtn");
 const categoryWrapper = document.querySelector(".categories");
+let token
+let userId
 
 const checkAuth = () => {
   if (sessionStorage.getItem('authToken')) {
@@ -14,6 +16,7 @@ const checkAuth = () => {
     editMode.classList.remove("inactive");
     categoryWrapper && categoryWrapper.classList.add("inactive");
     galleryEditBtn && galleryEditBtn.classList.remove("inactive");
+    token = sessionStorage.getItem('authToken');
   } else {
     loginBtn.innerText = 'login';
     editMode.classList.add("inactive");
@@ -51,6 +54,7 @@ const authUser = async (email, pwd) => {
       case 200:
         const res = await data.json();
         sessionStorage.setItem('authToken', res.token);
+        sessionStorage.setItem('userId', res.userId)
         window.location.href = "./index.html";
         loginBtn.innerText = 'logout'
         break;
