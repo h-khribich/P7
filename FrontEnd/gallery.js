@@ -24,6 +24,25 @@ const fetchGetData = async (endpoint) => {
   }
 }
 
+const alertMsg = (message, feature, e) => {
+  const alert = document.querySelector(".alertMsg");
+  alert.textContent = message;
+  const mouseX = e.clientX
+  const mouseY = e.clientY
+
+  if(feature === "delete") {
+    alert.style.backgroundColor = "darkred"
+  }
+  if(feature === "add") {
+    alert.style.backgroundColor = "darkgreen"
+  }
+
+  alert.style.left = `${mouseX}px`
+  alert.style.top = `${mouseY}px`
+  alert.classList.add("alert");
+  alert.classList.remove("inactive");
+}
+
 const deletePhoto = async (id) => {
   const token = sessionStorage.getItem('authToken');
 
@@ -126,7 +145,7 @@ loginBtn.addEventListener("click", (e) => {
 })
 
 const addDeletePicturesContent = () => {
-  modalTitle.innerText = "Gallerie photo";
+  modalTitle.innerText = "Galerie photo";
   modalConfirmationBtn.value = "Ajouter une photo";
   modalMainContent.innerHTML = '';
   modalConfirmationBtn.classList.add("inactive");
@@ -157,6 +176,7 @@ const addDeletePicturesContent = () => {
       const photoId = e.target.closest(".removeImgBtn").nextElementSibling.dataset.id;
       deletePhoto(photoId);
       addDeletePicturesContent();
+      // alertMsg("Image supprimée", "delete", e);
     })
   })
 }
@@ -215,6 +235,8 @@ const addNewPictureContent = async () => {
   let categorySelect = document.getElementById("category");
   categories.forEach((category) => categorySelect.innerHTML += `<option value=${category.id}>${category.name}</option>`);
 
+  const overlay = document.querySelector(".addImgOverlay");
+
   let addImgInput = document.getElementById("image");
   addImgInput.addEventListener(("change"), (e) => {
 
@@ -227,8 +249,6 @@ const addNewPictureContent = async () => {
 
       reader.onload = (e) => {
         const imgUrl = e.target.result
-    
-        const overlay = document.querySelector(".addImgOverlay");
         overlay.style.background = `no-repeat #E8F1F6 center/50% url(${imgUrl})`;
         overlay.classList.add("overlay");
       }
@@ -258,7 +278,9 @@ const addNewPictureContent = async () => {
     body.set("category", category);
     
     addNewImage(body);
-    setTimeout(editModalWrapper.close(), 500);
+    addImgForm.reset();
+    overlay.classList.remove("overlay");
+    // alertMsg("Image ajoutée", "add", e);
   })
 }
 
