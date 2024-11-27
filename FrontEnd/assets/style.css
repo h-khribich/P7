@@ -200,8 +200,14 @@ nav a:hover, li:hover, #loginBtn:hover {
   margin-top: 3rem;
 }
 
+.gallery > .workFigure {
+  display: flex;
+  flex-direction: column;
+}
+
 .gallery img {
 	width: 100%;
+  flex-grow: 1;
 }
 
 #galleryTitleWrapper {
