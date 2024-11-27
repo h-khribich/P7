@@ -200,7 +200,7 @@ nav a:hover, li:hover, #loginBtn:hover {
   margin-top: 3rem;
 }
 
-.gallery > .workFigure {
+.workFigure {
   display: flex;
   flex-direction: column;
 }
