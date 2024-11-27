@@ -24,11 +24,9 @@ const fetchGetData = async (endpoint) => {
   }
 }
 
-const alertMsg = (message, feature, e) => {
+const alertMsg = (message, feature) => {
   const alert = document.querySelector(".alertMsg");
   alert.textContent = message;
-  const mouseX = e.clientX
-  const mouseY = e.clientY
 
   if(feature === "delete") {
     alert.style.backgroundColor = "darkred"
@@ -37,10 +35,13 @@ const alertMsg = (message, feature, e) => {
     alert.style.backgroundColor = "darkgreen"
   }
 
-  alert.style.left = `${mouseX}px`
-  alert.style.top = `${mouseY}px`
   alert.classList.add("alert");
   alert.classList.remove("inactive");
+
+  setTimeout(() => {
+    alert.classList.remove("alert");
+    alert.classList.add("inactive");
+  }, 1010)
 }
 
 const deletePhoto = async (id) => {
@@ -176,7 +177,7 @@ const addDeletePicturesContent = () => {
       const photoId = e.target.closest(".removeImgBtn").nextElementSibling.dataset.id;
       deletePhoto(photoId);
       addDeletePicturesContent();
-      // alertMsg("Image supprimée", "delete", e);
+      alertMsg("Image supprimée", "delete");
     })
   })
 }
@@ -280,7 +281,7 @@ const addNewPictureContent = async () => {
     addNewImage(body);
     addImgForm.reset();
     overlay.classList.remove("overlay");
-    // alertMsg("Image ajoutée", "add", e);
+    alertMsg("Image ajoutée", "add");
   })
 }
 
